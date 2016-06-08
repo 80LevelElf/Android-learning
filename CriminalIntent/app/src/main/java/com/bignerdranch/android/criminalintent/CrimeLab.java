@@ -45,9 +45,7 @@ public class CrimeLab {
         for (Crime crime : mCrimes)
         {
             if (crime.getId().equals(id))
-            {
                 return crime;
-            }
         }
 
         return null;

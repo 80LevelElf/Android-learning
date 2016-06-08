@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,16 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Rustam on 04.06.2016.
  */
 public class CrimeListFragment extends Fragment {
 
+    private static final int REQUEST_CRIME = 1;
+
     private class CrimeHolder extends RecyclerView.ViewHolder
         implements View.OnClickListener
     {
-
         public TextView mTitleTextView;
         private TextView mDateTextView;
         private CheckBox mSolvedCheckBox;
@@ -46,8 +49,8 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(getActivity(),
-                    mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
+            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            getActivity().startActivityForResult(intent, REQUEST_CRIME);
         }
     }
 
@@ -94,11 +97,45 @@ public class CrimeListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CRIME)
+        {
+            UUID neededCrimeId = (UUID) data.getSerializableExtra("CRIME_ID");
+            List<Crime> crimeList = CrimeLab.get(getActivity()).getCrimes();
+            int position = -1;
+
+            for (int i = 0; i < crimeList.size(); i++)
+            {
+                Crime currentCrime = crimeList.get(i);
+
+                if (currentCrime.getId().equals(neededCrimeId))
+                {
+                    position = i;
+                    break;
+                }
+            }
+
+            if (position != -1)
+                mAdapter.notifyItemChanged(position);
+        }
+    }
+
     private void updateUI()
     {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
-        mAdapter = new CrimeAdapter(crimes);
-        mCrimeRecyclerView.setAdapter(mAdapter);
+
+        if (mAdapter == null)
+        {
+            mAdapter = new CrimeAdapter(crimes);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        }
     }
 }
