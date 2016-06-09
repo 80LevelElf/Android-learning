@@ -107,23 +107,7 @@ public class CrimeListFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CRIME)
         {
-            UUID neededCrimeId = (UUID) data.getSerializableExtra("CRIME_ID");
-            List<Crime> crimeList = CrimeLab.get(getActivity()).getCrimes();
-            int position = -1;
 
-            for (int i = 0; i < crimeList.size(); i++)
-            {
-                Crime currentCrime = crimeList.get(i);
-
-                if (currentCrime.getId().equals(neededCrimeId))
-                {
-                    position = i;
-                    break;
-                }
-            }
-
-            if (position != -1)
-                mAdapter.notifyItemChanged(position);
         }
     }
 
@@ -137,5 +121,7 @@ public class CrimeListFragment extends Fragment {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
         }
+        else
+            mAdapter.notifyDataSetChanged();
     }
 }

@@ -96,9 +96,6 @@ public class CrimeFragment extends Fragment {
 
     public void returnResult()
     {
-        Intent result = new Intent();
-        result.putExtra("CRIME_ID", getArguments().getSerializable(ARG_CRIME_ID));
-        getActivity().setResult(Activity.RESULT_OK, result);
-
+        getActivity().setResult(Activity.RESULT_OK, null);
     }
 }
