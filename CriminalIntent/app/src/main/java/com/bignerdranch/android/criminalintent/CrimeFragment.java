@@ -2,6 +2,7 @@ package com.bignerdranch.android.criminalintent;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -103,6 +104,9 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+
         returnResult();
     }
 
