@@ -1,31 +1,24 @@
 package com.bignerdranch.android.criminalintent;
 
 import java.util.Date;
-import java.util.StringTokenizer;
 import java.util.UUID;
 
-/**
- * Created by Parents on 29.05.2016.
- */
 public class Crime {
+
     private UUID mId;
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
+    private String mSuspect;
 
-    public Crime(){
+    public Crime() {
         this(UUID.randomUUID());
-
-        mId = UUID.randomUUID();
-        mDate = new Date();
     }
 
-    public Crime(UUID id)
-    {
+    public Crime(UUID id) {
         mId = id;
         mDate = new Date();
     }
-
     public UUID getId() {
         return mId;
     }
@@ -52,5 +45,13 @@ public class Crime {
 
     public void setSolved(boolean solved) {
         mSolved = solved;
+    }
+
+    public String getSuspect() {
+        return mSuspect;
+    }
+
+    public void setSuspect(String suspect) {
+        mSuspect = suspect;
     }
 }
