@@ -1,28 +1,29 @@
 package com.example.rustam.beatbox;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {
-
     protected abstract Fragment createFragment();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+    protected int getLayoutResId() {
+        return R.layout.activity_fragment;
+    }
 
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(getLayoutResId());
+        FragmentManager manager = getFragmentManager();
+        Fragment fragment = manager.findFragmentById(R.id.fragment_container);
 
         if (fragment == null) {
             fragment = createFragment();
-            fm.beginTransaction()
-                    .add(R.id.fragment_container, fragment)
-                    .commit();
+            manager.beginTransaction()
+                .add(R.id.fragment_container, fragment)
+                .commit();
         }
     }
-
 }
